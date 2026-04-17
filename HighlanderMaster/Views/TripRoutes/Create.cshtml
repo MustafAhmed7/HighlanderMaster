@@ -1,0 +1,118 @@
+﻿@model HighlanderMaster.Models.TripRoute
+@{
+    ViewData["Title"] = "Нов Маршрут";
+}
+
+<div class="p-5 mb-4 bg-light rounded-3 text-center">
+    <div class="container py-3">
+        <h1 class="display-5 fw-bold">🏔 Добави Нов Маршрут</h1>
+        <p class="lead">Попълни информацията за новото приключение.</p>
+    </div>
+</div>
+
+<div class="container mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <form asp-action="Create" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label fw-bold"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger small"></span>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="MaxCountPeople" class="form-label fw-bold"></label>
+                                <input asp-for="MaxCountPeople" class="form-control" />
+                                <span asp-validation-for="MaxCountPeople" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="LenghtKm" class="form-label fw-bold"></label>
+                                <input asp-for="LenghtKm" class="form-control" />
+                                <span asp-validation-for="LenghtKm" class="text-danger small"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="Price" class="form-label fw-bold"></label>
+                                <input asp-for="Price" class="form-control" placeholder="0.00" />
+                                <span asp-validation-for="Price" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Главна Снимка</label>
+                            <input type="file" name="mainPicFile" class="form-control" accept="image/*" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Допълнителни Снимки</label>
+                            <input type="file" name="pictureFiles" class="form-control" accept="image/*" multiple />
+                            <div class="form-text">Можеш да избереш няколко снимки наведнъж.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label fw-bold"></label>
+                            <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                            <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="StartingPoint" class="form-label fw-bold"></label>
+                                <input asp-for="StartingPoint" class="form-control" />
+                                <span asp-validation-for="StartingPoint" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="EndPoint" class="form-label fw-bold"></label>
+                                <input asp-for="EndPoint" class="form-control" />
+                                <span asp-validation-for="EndPoint" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="StartTime" class="form-label fw-bold"></label>
+                                <input asp-for="StartTime" class="form-control" type="datetime-local" />
+                                <span asp-validation-for="StartTime" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Duration" class="form-label fw-bold"></label>
+                                <input asp-for="Duration" class="form-control" placeholder="чч:мм:сс" />
+                                <span asp-validation-for="Duration" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Status" class="form-label fw-bold"></label>
+                            <select asp-for="Status" class="form-select" asp-items="Html.GetEnumSelectList<HighlanderMaster.Models.RouteStatus>()"></select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Category" class="form-label fw-bold"></label>
+                            <select asp-for="Category" class="form-select" asp-items="Html.GetEnumSelectList<HighlanderMaster.Models.RouteCategory>()"></select>
+                        </div>
+
+                        <div class="mb-3 form-check">
+                            <input class="form-check-input" asp-for="Deleted" />
+                            <label class="form-check-label" asp-for="Deleted">Изтрит</label>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="Index" class="btn btn-outline-secondary">← Обратно</a>
+                            <input type="submit" value="➕ Създай Маршрут" class="btn btn-success px-4" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

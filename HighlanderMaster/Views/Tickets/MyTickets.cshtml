@@ -1,0 +1,65 @@
+﻿@model IEnumerable<HighlanderMaster.Models.Ticket>
+@{
+    ViewData["Title"] = "Моите Билети";
+}
+
+<div class="p-5 mb-4 bg-light rounded-3 text-center">
+    <div class="container py-3">
+        <h1 class="display-5 fw-bold">🎫 Моите Билети</h1>
+        <p class="lead">Всички закупени билети за маршрути.</p>
+    </div>
+</div>
+
+<div class="container mb-5">
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">✅ @TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">❌ @TempData["Error"]</div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="text-center py-5">
+            <p class="text-muted fs-5">Нямаш закупени билети все още.</p>
+            <a asp-controller="TripRoutes" asp-action="Index" class="btn btn-success btn-lg">Разгледай Маршрути</a>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var ticket in Model)
+            {
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        @if (!string.IsNullOrEmpty(ticket.TripRoute?.MainPicURL))
+                        {
+                            <img src="@ticket.TripRoute.MainPicURL" class="card-img-top" style="height:180px; object-fit:cover;" />
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">🏔 @ticket.TripRoute?.Name</h5>
+                            <p class="text-muted small">📍 @ticket.TripRoute?.StartingPoint → @ticket.TripRoute?.EndPoint</p>
+                            <p class="text-muted small">📅 @ticket.TripRoute?.StartTime.ToString("dd MMM yyyy, HH:mm")</p>
+                            <hr />
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-success fs-5">@ticket.Price лв.</span>
+                                <span class="badge bg-success">✅ Платен</span>
+                            </div>
+                            <p class="text-muted small mt-1">Купен на: @ticket.PurchaseDate.ToString("dd MMM yyyy")</p>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between align-items-center">
+                            <a asp-controller="TripRoutes" asp-action="Details" asp-route-id="@ticket.TripRouteId" class="btn btn-success btn-sm">Детайли</a>
+                            <form asp-action="Cancel" method="post">
+                                <input type="hidden" name="id" value="@ticket.Id" />
+                                <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Сигурен ли си?')">❌ Откажи</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

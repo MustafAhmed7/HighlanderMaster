@@ -1,0 +1,58 @@
+﻿@page
+@model LoginModel
+@{
+    ViewData["Title"] = "Вход";
+}
+
+<div class="p-5 mb-4 bg-light rounded-3 text-center">
+    <div class="container py-3">
+        <h1 class="display-5 fw-bold">🏔 Добре дошъл!</h1>
+        <p class="lead">Влез в своя акаунт и открий следващото си приключение.</p>
+    </div>
+</div>
+
+<div class="container mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-5">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h5 class="text-success fw-bold mb-3">🔐 Вход с акаунт</h5>
+                    <hr />
+                    <form id="account" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Input.EmailOrUsername" class="form-label fw-bold">Имейл или Потребителско Име</label>
+                            <input asp-for="Input.EmailOrUsername" class="form-control" aria-required="true" placeholder="email или username" />
+                            <span asp-validation-for="Input.EmailOrUsername" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Input.Password" class="form-label fw-bold">Парола</label>
+                            <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="••••••••" />
+                            <span asp-validation-for="Input.Password" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3 form-check">
+                            <input class="form-check-input" asp-for="Input.RememberMe" />
+                            <label class="form-check-label" asp-for="Input.RememberMe">Запомни ме</label>
+                        </div>
+
+                        <button id="login-submit" type="submit" class="w-100 btn btn-success btn-lg">Влез</button>
+
+                        <hr class="my-4" />
+
+                        <div class="d-flex flex-column gap-2 text-center small">
+                            <a asp-page="./ForgotPassword" class="text-success">Забравена парола?</a>
+                            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="text-success">Нямаш акаунт? Регистрирай се</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

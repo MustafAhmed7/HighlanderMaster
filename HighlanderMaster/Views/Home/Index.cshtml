@@ -1,0 +1,125 @@
+﻿@{
+    ViewData["Title"] = "Начало";
+}
+
+
+<div class="p-5 mb-4 bg-light rounded-3 text-center">
+    <div class="container py-4">
+        <h1 class="display-4 fw-bold">HighlanderMaster</h1>
+        <p class="lead">Открий маршрути, запиши се за походи и сподели своите приключения.</p>
+        <a asp-controller="TripRoutes" asp-action="Index" class="btn btn-success btn-lg me-2">Разгледай Маршрути</a>
+        @if (!User.Identity.IsAuthenticated)
+        {
+            <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-outline-secondary btn-lg me-2">Регистрирай се</a>
+            <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-outline-success btn-lg">Влез</a>
+        }
+    </div>
+</div>
+
+
+<div class="row text-center mb-5">
+    <div class="col-md-3">
+        <h2 class="text-success">120+</h2>
+        <p>Маршрута</p>
+    </div>
+    <div class="col-md-3">
+        <h2 class="text-success">3 400</h2>
+        <p>Участници</p>
+    </div>
+    <div class="col-md-3">
+        <h2 class="text-success">850+</h2>
+        <p>Отзива</p>
+    </div>
+    <div class="col-md-3">
+        <h2 class="text-success">6</h2>
+        <p>Категории</p>
+    </div>
+</div>
+
+
+<div class="container mb-5">
+    <h2 class="mb-4">Категории</h2>
+    <div class="row g-3 justify-content-center">
+        <div class="col-6 col-md-4">
+            <a asp-controller="TripRoutes" asp-action="Index" asp-route-category="Hiking" class="btn btn-outline-success w-100 py-3">🥾<br />Преходи</a>
+        </div>
+        <div class="col-6 col-md-4">
+            <a asp-controller="TripRoutes" asp-action="Index" asp-route-category="Climbing" class="btn btn-outline-success w-100 py-3">🧗<br />Катерене</a>
+        </div>
+        <div class="col-6 col-md-4">
+            <a asp-controller="TripRoutes" asp-action="Index" asp-route-category="Camping" class="btn btn-outline-success w-100 py-3">⛺<br />Походи</a>
+        </div>
+    </div>
+</div>
+
+
+<div class="container mb-5">
+    <h2 class="mb-4">Предстоящи Маршрути</h2>
+    <div class="row g-4">
+
+        <div class="col-md-4">
+            <a asp-controller="TripRoutes" asp-action="Details" asp-route-id="2" class="text-decoration-none text-dark">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <span class="badge bg-success mb-2">Активен</span>
+                        <h5 class="card-title">🏔 Седемте Рилски Езера</h5>
+                        <p class="card-text text-muted">Едно от най-известните места в Рила.</p>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between text-muted small">
+                        <span>📅 15 Апр 2025</span>
+                        <span>👥 8/20</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a asp-controller="TripRoutes" asp-action="Details" asp-route-id="3" class="text-decoration-none text-dark">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <span class="badge bg-warning text-dark mb-2">Предстоящ</span>
+                        <h5 class="card-title">⛰ Вихрен — Пирин</h5>
+                        <p class="card-text text-muted">Изкачване на най-красивия връх в Пирин.</p>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between text-muted small">
+                        <span>📅 22 Апр 2025</span>
+                        <span>👥 5/15</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a asp-controller="TripRoutes" asp-action="Details" asp-route-id="4" class="text-decoration-none text-dark">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <span class="badge bg-success mb-2">Активен</span>
+                        <h5 class="card-title">🧗 Катерене — Леденика</h5>
+                        <p class="card-text text-muted">Въведение в катеренето за начинаещи.</p>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between text-muted small">
+                        <span>📅 28 Апр 2025</span>
+                        <span>👥 3/10</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="p-5 bg-success text-white text-center rounded-3 mb-5">
+    <h2>Готов ли си?</h2>
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <p class="lead">Регистрирай се безплатно и открий стотици маршрути.</p>
+        <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-light btn-lg me-2">Регистрирай се</a>
+        <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-outline-light btn-lg">Влез</a>
+    }
+    else
+    {
+        <p class="lead">Добре дошъл! Разгледай всички налични маршрути.</p>
+        <a asp-controller="TripRoutes" asp-action="Index" class="btn btn-light btn-lg">Разгледай Маршрути</a>
+    }
+</div>

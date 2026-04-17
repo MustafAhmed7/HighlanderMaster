@@ -1,0 +1,109 @@
+﻿@{
+    ViewData["Title"] = "Контакти";
+}
+
+<div class="p-5 mb-4 bg-light rounded-3 text-center">
+    <div class="container py-3">
+        <h1 class="display-5 fw-bold">📞 Свържи се с нас</h1>
+        <p class="lead">Имаш въпроси? Ще се радваме да чуем от теб!</p>
+    </div>
+</div>
+
+<div class="container mb-5">
+    <div class="row g-4">
+
+        <div class="col-lg-5">
+            <div class="card shadow-sm h-100">
+                <div class="card-body p-4">
+                    <h5 class="text-success fw-bold mb-3">📋 Информация за контакт</h5>
+                    <hr />
+
+                    <div class="d-flex gap-3 mb-3">
+                        <span style="font-size:1.5rem;">📍</span>
+                        <div>
+                            <p class="fw-bold mb-0">Адрес</p>
+                            <p class="text-muted">ул. Планинска 42, София, България</p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-3 mb-3">
+                        <span style="font-size:1.5rem;">📧</span>
+                        <div>
+                            <p class="fw-bold mb-0">Имейл</p>
+                            <a href="mailto:mustafa.ahmed@pgmett.com" class="text-success">mustafa.ahmed@pgmett.com</a>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-3 mb-3">
+                        <span style="font-size:1.5rem;">📱</span>
+                        <div>
+                            <p class="fw-bold mb-0">Телефон</p>
+                            <a href="tel:+35929876543" class="text-success">+359 89 5858 802</a>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-3 mb-3">
+                        <span style="font-size:1.5rem;">🕐</span>
+                        <div>
+                            <p class="fw-bold mb-0">Работно Време</p>
+                            <p class="text-muted mb-0">Понеделник — Петък: 09:00 — 18:00</p>
+                            <p class="text-muted">Събота: 10:00 — 14:00</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h5 class="text-success fw-bold mb-3">✉️ Изпрати съобщение</h5>
+                    <hr />
+
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success">✅ @TempData["Success"]</div>
+                    }
+
+                    <form asp-action="Contact" asp-controller="Home" method="post">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Име</label>
+                                <input type="text" name="Name" class="form-control" placeholder="Вашето име" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Имейл</label>
+                                <input type="email" name="Email" class="form-control" placeholder="email@example.com" required />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Тема</label>
+                            <input type="text" name="Subject" class="form-control" placeholder="Тема на съобщението" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Съобщение</label>
+                            <textarea name="Message" class="form-control" rows="5" placeholder="Напиши своето съобщение..." required></textarea>
+                        </div>
+
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-success px-4">📨 Изпрати</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="p-5 bg-success text-white text-center rounded-3 mb-5">
+    <h2>Следвай ни</h2>
+    <p class="lead">Бъди в крак с последните маршрути и новини.</p>
+    <div class="d-flex justify-content-center gap-3">
+        <a href="#" class="btn btn-light btn-lg">Facebook</a>
+        <a href="#" class="btn btn-outline-light btn-lg">Instagram</a>
+    </div>
+</div>

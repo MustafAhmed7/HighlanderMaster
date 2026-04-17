@@ -1,0 +1,205 @@
+﻿@model HighlanderMaster.Models.TripRoute
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+@{
+    ViewData["Title"] = "Детайли";
+    var pictures = Model.PicturesURL?.Split(',', StringSplitOptions.RemoveEmptyEntries) ?? Array.Empty<string>();
+    var currentUserId = UserManager.GetUserId(User);
+}
+
+<div class="p-5 mb-4 bg-light rounded-3 text-center">
+    <div class="container py-3">
+        <h1 class="display-5 fw-bold">🏔 @Model.Name</h1>
+        <p class="lead">@Model.Description</p>
+        <span class="badge bg-success fs-6">@Model.Status</span>
+        <span class="badge bg-success fs-6">@Model.Category</span>
+    </div>
+</div>
+
+<div class="container mb-5">
+    <div class="row g-4">
+
+        <div class="col-lg-7">
+            @if (!string.IsNullOrEmpty(Model.MainPicURL) || pictures.Length > 0)
+            {
+                <div id="routeCarousel" class="carousel slide rounded-3 overflow-hidden shadow-sm" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        @if (!string.IsNullOrEmpty(Model.MainPicURL))
+                        {
+                            <button type="button" data-bs-target="#routeCarousel" data-bs-slide-to="0" class="active"></button>
+                        }
+                        @for (int i = 0; i < pictures.Length; i++)
+                        {
+                            <button type="button" data-bs-target="#routeCarousel" data-bs-slide-to="@(i + (string.IsNullOrEmpty(Model.MainPicURL) ? 0 : 1))"></button>
+                        }
+                    </div>
+                    <div class="carousel-inner">
+                        @if (!string.IsNullOrEmpty(Model.MainPicURL))
+                        {
+                            <div class="carousel-item active">
+                                <img src="@Model.MainPicURL" class="d-block w-100" style="height:400px; object-fit:cover;" alt="Главна снимка" />
+                            </div>
+                        }
+                        @foreach (var pic in pictures)
+                        {
+                            <div class="carousel-item @(string.IsNullOrEmpty(Model.MainPicURL) && pic == pictures[0] ? "active" : "")">
+                                <img src="@pic.Trim()" class="d-block w-100" style="height:400px; object-fit:cover;" alt="Снимка" />
+                            </div>
+                        }
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#routeCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#routeCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+                </div>
+            }
+            else
+            {
+                <div class="bg-secondary text-white d-flex align-items-center justify-content-center rounded-3" style="height:400px;">
+                    <span style="font-size:5rem;">🏔</span>
+                </div>
+            }
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card shadow-sm h-100">
+                <div class="card-body p-4">
+                    <h5 class="text-success fw-bold mb-3">📋 Информация</h5>
+                    <hr />
+                    <dl class="row">
+                        <dt class="col-sm-5 text-muted">📍 Начало</dt>
+                        <dd class="col-sm-7">@Model.StartingPoint</dd>
+
+                        <dt class="col-sm-5 text-muted">🏁 Край</dt>
+                        <dd class="col-sm-7">@Model.EndPoint</dd>
+
+                        <dt class="col-sm-5 text-muted">📏 Дължина</dt>
+                        <dd class="col-sm-7">@Model.LenghtKm км</dd>
+
+                        <dt class="col-sm-5 text-muted">👥 Макс. участници</dt>
+                        <dd class="col-sm-7">@Model.MaxCountPeople</dd>
+
+                        <dt class="col-sm-5 text-muted">📅 Начало</dt>
+                        <dd class="col-sm-7">@Model.StartTime.ToString("dd MMM yyyy, HH:mm")</dd>
+
+                        <dt class="col-sm-5 text-muted">⏱ Продължителност</dt>
+                        <dd class="col-sm-7">@Model.Duration</dd>
+
+                        <dt class="col-sm-5 text-muted">📂 Категория</dt>
+                        <dd class="col-sm-7">@Model.Category</dd>
+
+                        <dt class="col-sm-5 text-muted">💰 Цена</dt>
+                        <dd class="col-sm-7 fw-bold text-success">@Model.Price €</dd>
+
+                        <dt class="col-sm-5 text-muted">🔘 Статус</dt>
+                        <dd class="col-sm-7">
+                            @if (Model.Status.ToString() == "Active")
+                            {
+                                <span class="badge bg-success">Активен</span>
+                            }
+                            else if (Model.Status.ToString() == "Upcoming")
+                            {
+                                <span class="badge bg-warning text-dark">Предстоящ</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Неактивен</span>
+                            }
+                        </dd>
+                    </dl>
+
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success mt-3">✅ @TempData["Success"]</div>
+                    }
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="alert alert-danger mt-3">❌ @TempData["Error"]</div>
+                    }
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <form asp-controller="Tickets" asp-action="Buy" method="post" class="w-100 mt-3">
+                            <input type="hidden" name="tripRouteId" value="@Model.Id" />
+                            <button type="submit" class="btn btn-success w-100">🎫 Купи Билет — @Model.Price €</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-outline-success w-100 mt-3">🔐 Влез за да купиш билет</a>
+                    }
+
+                    <div class="d-flex gap-2 mt-3">
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-secondary w-50">✏️ Редактирай</a>
+                        }
+                        <a asp-action="Index" class="btn btn-success w-50">← Обратно</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-12">
+            <h4 class="fw-bold mb-4">💬 Коментари (@(Model.Comments?.Count(c => !c.Deleted) ?? 0))</h4>
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body p-4">
+                        <h6 class="fw-bold text-success mb-3">Напиши коментар</h6>
+                        <form asp-controller="Comments" asp-action="Add" method="post">
+                            <input type="hidden" name="tripRouteId" value="@Model.Id" />
+                            <div class="mb-3">
+                                <textarea name="text" class="form-control" rows="3" placeholder="Сподели впечатленията си от маршрута..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-success">💬 Публикувай</button>
+                        </form>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-light border mb-4">
+                    <a asp-area="Identity" asp-page="/Account/Login" class="text-success fw-bold">Влез</a> за да оставиш коментар.
+                </div>
+            }
+
+            @if (Model.Comments != null && Model.Comments.Any(c => !c.Deleted))
+            {
+                @foreach (var comment in Model.Comments.Where(c => !c.Deleted).OrderByDescending(c => c.CreatedAt))
+                {
+                    <div class="card shadow-sm mb-3">
+                        <div class="card-body p-3">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <span class="fw-bold text-success">👤 @comment.UserName</span>
+                                    <span class="text-muted small ms-2">@comment.CreatedAt.ToString("dd MMM yyyy, HH:mm")</span>
+                                </div>
+                                @if (User.IsInRole("Admin") || comment.UserId == currentUserId)
+                                {
+                                    <form asp-controller="Comments" asp-action="Delete" method="post">
+                                        <input type="hidden" name="id" value="@comment.Id" />
+                                        <input type="hidden" name="tripRouteId" value="@Model.Id" />
+                                        <button type="submit" class="btn btn-outline-danger btn-sm">🗑</button>
+                                    </form>
+                                }
+                            </div>
+                            <p class="mt-2 mb-0">@comment.Text</p>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="text-muted">Все още няма коментари. Бъди първият!</p>
+            }
+        </div>
+    </div>
+
+</div>
