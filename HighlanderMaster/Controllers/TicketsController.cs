@@ -18,7 +18,6 @@ namespace HighlanderMaster.Controllers
             _userManager = userManager;
         }
 
-        // GET: Моите билети
         public async Task<IActionResult> MyTickets()
         {
             var userId = _userManager.GetUserId(User);
@@ -30,14 +29,12 @@ namespace HighlanderMaster.Controllers
             return View(tickets);
         }
 
-        // POST: Купи билет
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Buy(int tripRouteId)
         {
             var userId = _userManager.GetUserId(User);
 
-            // Провери дали вече има билет за този маршрут
             var existing = await _context.Tickets
                 .FirstOrDefaultAsync(t => t.UserId == userId && t.TripRouteId == tripRouteId);
 
@@ -50,7 +47,6 @@ namespace HighlanderMaster.Controllers
             var route = await _context.Routes.FindAsync(tripRouteId);
             if (route == null) return NotFound();
 
-            // Провери дали има свободни места
             if (route.CurrentParticipants >= route.MaxCountPeople)
             {
                 TempData["Error"] = "Няма свободни места за този маршрут!";
@@ -68,7 +64,6 @@ namespace HighlanderMaster.Controllers
 
             _context.Tickets.Add(ticket);
 
-            // Намали свободните места
             route.CurrentParticipants++;
             _context.Routes.Update(route);
 
@@ -78,7 +73,6 @@ namespace HighlanderMaster.Controllers
             return RedirectToAction("MyTickets");
         }
 
-        // POST: Откажи билет
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Cancel(int id)
@@ -89,7 +83,6 @@ namespace HighlanderMaster.Controllers
 
             if (ticket == null) return NotFound();
 
-            // Върни мястото
             var route = await _context.Routes.FindAsync(ticket.TripRouteId);
             if (route != null && route.CurrentParticipants > 0)
             {

@@ -16,7 +16,7 @@ namespace HighlanderMaster
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
-                .AddRoles<IdentityRole>()  // <- добавено
+                .AddRoles<IdentityRole>()  
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             builder.Services.AddControllersWithViews();
@@ -25,7 +25,7 @@ namespace HighlanderMaster
 
             var app = builder.Build();
 
-            // Създай роли и задай Admin на първия потребител
+            
             using (var scope = app.Services.CreateScope())
             {
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();

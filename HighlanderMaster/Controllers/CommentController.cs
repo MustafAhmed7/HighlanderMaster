@@ -18,7 +18,6 @@ namespace HighlanderMaster.Controllers
             _userManager = userManager;
         }
 
-        // POST: Добави коментар
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(int tripRouteId, string text)
@@ -46,7 +45,6 @@ namespace HighlanderMaster.Controllers
             return RedirectToAction("Details", "TripRoutes", new { id = tripRouteId });
         }
 
-        // POST: Изтрий коментар (Admin или собственик)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id, int tripRouteId)
@@ -56,7 +54,6 @@ namespace HighlanderMaster.Controllers
 
             if (comment == null) return NotFound();
 
-            // Само Admin или собственикът може да трие
             if (User.IsInRole("Admin") || comment.UserId == userId)
             {
                 _context.Comments.Remove(comment);
