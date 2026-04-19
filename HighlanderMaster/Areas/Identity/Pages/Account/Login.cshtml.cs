@@ -78,7 +78,6 @@ namespace HighlanderMaster.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                // Намери потребителя по имейл или username
                 var user = await _userManager.FindByEmailAsync(Input.EmailOrUsername)
                            ?? await _userManager.FindByNameAsync(Input.EmailOrUsername);
 
